@@ -1,0 +1,29 @@
+{
+  "name": "co_mongodb_demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stableShip/CO_MONGODB_DEMO.git"
+  },
+  "keywords": [
+    "co",
+    "mongodb"
+  ],
+  "author": "JIE",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stableShip/CO_MONGODB_DEMO/issues"
+  },
+  "homepage": "https://github.com/stableShip/CO_MONGODB_DEMO",
+  "dependencies": {
+    "co": "^4.6.0",
+    "mocha": "^2.4.5",
+    "mongoose": "^4.4.14",
+    "should": "^8.3.1"
+  }
+}
