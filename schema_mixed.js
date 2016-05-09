@@ -53,26 +53,71 @@ describe("Schema_Mixed", function () {
     })
 
 
-    it.only("update", function (done) {
+    it("update", function (done) {
         co(function* () {
             try {
                 var mixed = new Mixed();
                 mixed.data = {name: "JIE"};
-                mixed.markModified("data");
+                //mixed.markModified("data"); // 不需要了，也可以正常保存数据
                 yield mixed.save();
                 mixed = yield Mixed.findOne({"data.name": "JIE"});
-                console.log(mixed,111);
-                mixed.date = {"gender": 1};
-                //mixed.data.gender = 1;
-                mixed.markModified("data");
-                mixed.markModified("data.name");
-                mixed.markModified("data.gender");
+                mixed.data = {"gender": 1};
+                //mixed.markModified("data");　
                 yield mixed.save();
-                //mixed = yield Mixed.findOne({"data.name": "JIE"});
-                //console.log(mixed);
-                //mixed.should.be.true;
-                //mixed = yield Mixed.findOne({"data.name": "test"});
-                //mixed.name.should.exactly("test")
+                mixed = yield Mixed.findOne({"data.name": "JIE"});
+                (!mixed).should.be.true;
+                mixed = yield Mixed.findOne({"data.gender": 1});
+                mixed.data.gender.should.exactly(1)
+                done();
+            } catch (err) {
+                console.log(err);
+            }
+        });
+    })
+
+
+    it("find", function (done) {
+        co(function* () {
+            try {
+                var mixed = new Mixed();
+                mixed.data = {name: "JIE"};
+                yield mixed.save();
+                mixed = yield Mixed.find({"data.name": "JIE"});
+                mixed.should.be.an.ARRAY;
+                console.log(mixed)
+                mixed[0].data.name.should.exactly("JIE")
+                done();
+            } catch (err) {
+                console.log(err);
+            }
+        });
+    })
+
+
+    it("findOne", function (done) {
+        co(function* () {
+            try {
+                var mixed = new Mixed();
+                mixed.data = {name: "JIE"};
+                yield mixed.save();
+                mixed = yield Mixed.findOne({"data.name": "JIE"});
+                mixed.data.name.should.exactly("JIE")
+                done();
+            } catch (err) {
+                console.log(err);
+            }
+        });
+    })
+
+
+    it("findOneAndUpdate", function (done) {
+        co(function* () {
+            try {
+                var mixed = new Mixed();
+                mixed.data = {name: "JIE"};
+                yield mixed.save();
+                mixed = yield Mixed.findOneAndUpdate({"data.name": "JIE"}, {"data.name": "test"}, {new: true});
+                mixed.data.name.should.exactly("test")
                 done();
             } catch (err) {
                 console.log(err);
