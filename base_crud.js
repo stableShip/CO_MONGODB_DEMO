@@ -11,7 +11,7 @@ var userSchema = new Schema({
     age: Number,
     birthday: Date,
     role: {
-        name: String,
+        name: {type:String,index:true}
     },
     crtTime: {type: Date, default: new Date()}
 
@@ -111,7 +111,7 @@ describe("base_crud", function () {
     })
 
 
-    it("find in", function (done) {
+    it.only("find in", function (done) {
         co(function* () {
             try {
                 yield User.create({
@@ -140,18 +140,18 @@ describe("base_crud", function () {
                     }
                 }, {
                     role: {
-                        name: "1"
+                        name: "7"
                     }
                 }, {
                     role: {
-                        name: "1"
+                        name: "8"
                     }
                 }, {
                     role: {
-                        name: "1"
+                        name: "9"
                     }
                 })
-                var users = yield User.find({"role.name": {$in: [1, 2, 3]}}).skip(2).limit(2);
+                var users = yield User.find({"role.name": {$in: [1, 2, 3]}}).sort({_id: -1}).limit(2);
                 console.log(users)
                 users.should.be.an.Array;
                 done();
@@ -195,4 +195,26 @@ describe("base_crud", function () {
             }
         });
     })
+
+
+    it("find ObjectId", function (done) {
+        co(function* () {
+            try {
+                yield User.create({
+                    name: "JIE",
+                    role: {
+                        name: "1"
+                    },
+                    gender: "1"
+                })
+                var user = yield User.findOne({"name": "JIE"});
+                var user1 = yield User.count({"_id": user._id});
+                console.log("user1:",user1)
+                done();
+            } catch (err) {
+                console.log(err);
+            }
+        });
+    })
+
 })
