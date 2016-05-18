@@ -20,11 +20,10 @@ describe("Schema_Mixed", function () {
         })
     })
 
-    it("create", function (done) {
+    it("create Object", function (done) {
         co(function* () {
             var mixed = new Mixed();
             mixed.data = {name: "JIE"}
-            mixed.markModified("data")
             yield mixed.save();
             mixed = yield Mixed.findOne({"data.name": "JIE"});
             mixed.data.should.have.property("name", "JIE");
@@ -34,6 +33,22 @@ describe("Schema_Mixed", function () {
                 console.log(err)
             });
     })
+
+
+    it("create String", function (done) {
+        co(function* () {
+            var mixed = new Mixed();
+            mixed.data = "test"
+            yield mixed.save();
+            mixed = yield Mixed.findOne({"data": "test"});
+            mixed.should.have.property("data", "test");
+            done();
+        })
+            .catch(function (err) {
+                console.log(err)
+            });
+    })
+
 
     it("remove", function (done) {
         co(function* () {
